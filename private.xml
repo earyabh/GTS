@@ -37,22 +37,6 @@
       This means that the property value can be overidden in a 'config.conf' as follows:
         Domain.Properties.topMenu.showMenuHelp=false
   =======================================================================================
-  This configuration documentation is currently very light, but should improve over time.
-  At a minimum, you will need to configure the following items:
-    1) Email addresses:  This XML file contains many example email addresses, each using
-       the example domain name "example.com".  Replace each of these email addresses with
-       your own appropriate email address.
-    2) Google Maps key:  To access Google Maps, you must register for a key.  This can be
-       done at the following Google URL: http://www.google.com/apis/maps/signup.html
-       Place the registered Google Maps key in the appropriate location below (search for
-       "*** PLACE AUTHORIZATION KEY HERE ***").
-       Note: When using the Google Map mapping service, it is your responsibility 
-       to make sure you comply with all of the Google terms of use for this service.
-    3) To instead use Microsoft Virtual Earth, comment the MapProvider section for GoogleMap
-       and uncomment the MapProvider section for VirtualEarth (or set 'active="false"' on
-       GoogleMap, and set 'active="true"' for VirtualEarth).
-  Other items (web decorations, etc) may be changed as desired.
-  =======================================================================================
   Change History:
    2008/02/07  Martin D. Flynn
       -Added 'i18n' attributes to displayable text to allow Localization.
@@ -119,13 +103,16 @@
  === property "accountLogin.showLocaleSelection" is set to true.
  -->
 <SupportedLocales>
-    <Locale id="nl" i18n="PrivateXML.locale.dutch"     >Dutch</Locale>
+<!-- Locale id="ar" i18n="PrivateXML.locale.arabic"    >Arabic</Locale -->
     <Locale id="en" i18n="PrivateXML.locale.english"   >English</Locale>
     <Locale id="fr" i18n="PrivateXML.locale.french"    >French</Locale>
     <Locale id="de" i18n="PrivateXML.locale.german"    >German</Locale>
     <Locale id="el" i18n="PrivateXML.locale.greek"     >Greek</Locale>
     <Locale id="hu" i18n="PrivateXML.locale.hungarian" >Hungarian</Locale>
     <Locale id="it" i18n="PrivateXML.locale.italian"   >Italian</Locale>
+<!-- Locale id="lo" i18n="PrivateXML.locale.lao"       >Lao</Locale -->
+    <Locale id="nl" i18n="PrivateXML.locale.dutch"     >Dutch</Locale>
+    <Locale id="pl" i18n="PrivateXML.locale.polish"    >Polish</Locale>
     <Locale id="pt" i18n="PrivateXML.locale.portuguese">Portuguese</Locale>
     <Locale id="ro" i18n="PrivateXML.locale.romanian"  >Romanian</Locale>
     <Locale id="ru" i18n="PrivateXML.locale.russian"   >Russian</Locale>
@@ -150,9 +137,9 @@
     Europe/London  Europe/Madrid  Europe/Moscow  Europe/Oslo      Europe/Paris  Europe/Rome
     Europe/Stockholm  Europe/Zurich
     GMT  GMT+00:00
-    GMT+01:00  GMT+02:00  GMT+03:00  GMT+04:00  GMT+05:00  GMT+05:30  GMT+06:00  GMT+07:00
+    GMT+01:00  GMT+02:00  GMT+03:00  GMT+04:00  GMT+05:00  GMT+05:30  GMT+06:00  GMT+06:30  GMT+07:00
     GMT+08:00  GMT+09:00  GMT+10:00  GMT+11:00  GMT+12:00  GMT+13:00  GMT+14:00  
-    GMT-01:00  GMT-02:00  GMT-03:00  GMT-04:00  GMT-05:00             GMT-06:00  GMT-07:00
+    GMT-01:00  GMT-02:00  GMT-03:00  GMT-04:00  GMT-05:00             GMT-06:00             GMT-07:00
     GMT-08:00  GMT-09:00  GMT-10:00  GMT-11:00  GMT-12:00
 </TimeZones>
 
@@ -178,10 +165,6 @@ Notes:
   'host="*"'), then all Account records must have a valid 'privateLabelName' specified.  Otherwise, 
   no PrivateLabel domain can be associated with the account, and some services (reverse-geocoding, 
   etc) may not be available.
-* If you are using Google Maps as the mapping service provider, you will need to register a specific 
-  URL to obtain a Google Maps key (when using the Google Map mapping service, it is your 
-  responsibility to make sure you comply with all of the Google terms of use for this service).  See 
-  the "MapProvider" tag below for more information.
 * To remove the "Demo" button from the login pages, specify 'demo="false"' below.
 * Supported languages now include:
       "de" (German)
@@ -192,6 +175,7 @@ Notes:
       "hu" (Hungarian)
       "it" (Italian)
       "nl" (Netherlands/Dutch)
+      "pl" (Polish)
       "pt" (Portuguese)
       "ro" (Romanian)
       "ru" (Russian)
@@ -210,8 +194,8 @@ Notes:
     emailLogin="${Domain.emailLogin=false}"
     showPassword="${Domain.showPassword=true}"
     restricted="${Domain.restricted=false}"
-    demo="${Domain.demo=false}" 
-    locale="${Domain.locale=fr}">
+    demo="${Domain.demo=true}" 
+    locale="${Domain.locale=en}">
 
     <!-- Default Base URL -->
     <!-- - ->
@@ -250,7 +234,7 @@ Notes:
      ===   "LocalStrings_XX.properties" files.
      === - The <I18N> tag section must appear before the refererence to the specific string key 
      ===   elsewhere in this XML file.
-     -->
+     --> 
     <I18N>
         <!-- Legend -->
         <String key="i18n.PushPin_Legend"    i18n="PrivateXML.legend.title"             >Pushpin Legend</String>
@@ -259,6 +243,7 @@ Notes:
         <String key="i18n.More_than_5mph"    i18n="PrivateXML.legend.gt5mph"            >More than %{mph:5}</String>
         <String key="i18n.Less_than_5mph"    i18n="PrivateXML.legend.lt5mph"            >Less than %{mph:5}</String>
         <String key="i18n.Last_Location"     i18n="PrivateXML.legend.lastLocation"      >Last Location</String>
+        <String key="i18n.Page_Title"        i18n="PrivateXML.pageTitle"                >GPS Tracking</String>
         <!-- MenuGroup -->
         <String key="i18n.Last_Location_Map" i18n="PrivateXML.menugroup.maps.lastLocMap">Last Location Map</String>
     </I18N>
@@ -266,20 +251,25 @@ Notes:
     <!-- ========================================================================================== -->
 
     <!-- Copyright used in html head 'meta' tag -->
-    <Copyright>${Domain.Copyright=Copyright(C) 2008-2011 GeoTelematic Solutions, Inc.}</Copyright>
+    <Copyright>${Domain.Copyright=Copyright(C) 2007-2015 GeoTelematic Solutions, Inc.}</Copyright>
 
     <!-- Title used in html head 'title' tag -->
     <PageTitle i18n="PrivateXML.pageTitle">${Domain.PageTitle=${ServiceAccount.Name=OpenGTS} GPS Tracking}</PageTitle>
 
     <!-- Date/Time format (Note: These date/time format values are CASE SENSITIVE!!)
-     === yyyy - year
-     ===   MM - month
-     ===   dd - day
-     ===   HH - 24 hour
-     ===   hh - 12 hour
-     ===   mm - minute
-     ===   ss - second
-     ===   aa - AM/PM
+     === Formatting options:
+     ===    yyyy - year
+     ===      MM - month
+     ===      dd - day
+     ===      HH - 24 hour
+     ===      hh - 12 hour
+     ===      mm - minute
+     ===      ss - second
+     ===      aa - AM/PM
+     === "DateFormat" below should be one of the following:
+     ===    - yyyy/MM/dd
+     ===    - MM/dd/yyyy
+     ===    - dd/MM/yyyy
      -->
     <DateFormat>${Domain.DateFormat=yyyy/MM/dd}</DateFormat> <!-- see "java.text.SimpleDateFormat" -->
     <TimeFormat>${Domain.TimeFormat=HH:mm:ss}</TimeFormat>   <!-- see "java.text.SimpleDateFormat" -->
@@ -318,6 +308,7 @@ Notes:
         <Property key="track.validateIDs">true</Property>                       <!-- [true|false] validate all IDs (MUST BE TRUE) -->
         <Property key="track.enableAuthenticationService">false</Property>      <!-- [true|false] enable "page=AUTHENTICATE" -->
         <Property key="track.forwardToSecureAccess">false</Property>            <!-- [true|false] forward 'http' to 'https' -->
+        <Property key="track.firstLoginPageID">menu.top</Property>              <!-- [menu.top|map.device|map.fleet] first page after login -->
 
         <!-- AccountLogin properties -->
         <Property key="accountLogin.showLoginLink">true</Property>              <!-- [true|false] show "Login" link on login page -->
@@ -339,7 +330,7 @@ Notes:
          ===  button-icon : "ButtonImage" button ("ButtonImage" tag), with icon ("IconImage" tag) overlay, menu items
          -->
 
-        <!-- TopMenu properties -->
+        <!-- TopMenu properties -->533
         <Property key="topMenu.maximumIconsPerRow">9</Property>                 <!-- [#] (for 'menuType=icon') max icons per row -->
         <Property key="topMenu.showHeader">default</Property>                   <!-- [true|false|default] show header -->
         <Property key="topMenu.showMenuDescription">long</Property>             <!-- [none|short|long] show menu description -->
@@ -358,6 +349,7 @@ Notes:
         <Property key="trackMap.mapUpdateOnLoad">all</Property>                 <!-- [all|last] Update Map -->
         <Property key="trackMap.autoUpdateRecenter">zoom</Property>             <!-- [no|last|zoom] recenter map on auto-update -->
         <Property key="trackMap.detailCenterPushpin">false</Property>           <!-- [true|false] center pushpin when selecting a detail row -->
+        <Property key="trackMap.showLocationDetails">true</Property>            <!-- [true|false] show "Location Details" report -->
         <Property key="trackMap.detailAscending">true</Property>                <!-- [true|false] sort detail events in ascending/descending order -->
         <Property key="trackMap.showUpdateAll">true</Property>                  <!-- [true|false] show "Update All" location button -->
         <Property key="trackMap.showUpdateLast">false</Property>                <!-- [true|false] show Update "Last" location button -->
@@ -388,6 +380,7 @@ Notes:
 
         <!-- DeviceInfo properties -->
         <Property key="deviceInfo.allowEditServerID">false</Property>           <!-- [true|false] Allow editing "Server ID" -->
+        <Property key="deviceInfo.allowEditFirmwareVersion">false</Property>    <!-- [true|false] Allow editing "Firmware Version" -->
         <Property key="deviceInfo.showNotificationFields">default</Property>    <!-- [true|false|default] show notification fields -->
         <Property key="deviceInfo.showWorkOrderField">default</Property>        <!-- [true|false|default] show WorkOrder ID field -->
         <Property key="deviceInfo.showPropertiesButton">false</Property>        <!-- [true|false] show "Properties" button -->
@@ -402,13 +395,16 @@ Notes:
         <Property key="deviceInfo.showDisplayColor">true</Property>             <!-- [true|false] show Display Color ("Route-Line") -->
         <Property key="deviceInfo.showDataKey">false</Property>                 <!-- [true|false] (EXPERIMENTAL) show Data Key -->
         <Property key="deviceInfo.allowNewDevice">true</Property>               <!-- [true|false|sysadmin] allow new device creation -->
+        <Property key="deviceInfo.allowDeleteDevice">true</Property>            <!-- [true|false|sysadmin] allow delete device -->
+        <Property key="deviceInfo.showFaultCodes">false</Property>              <!-- [true|false] show last fault codes (requires Device/EventData table support) -->
         <Property key="deviceInfo.sms.useDeviceSMSCommands">true</Property>     <!-- [true|false] Use Device "deviceCode" SMS commands -->
 
         <!-- GroupInfo properties -->
         <Property key="groupInfo.showPropertiesButton">false</Property>         <!-- [true|false] show "Properties" button -->
+        <Property key="groupInfo.deviceListSortBy">desc</Property>              <!-- [id|desc] sort device member list by -->
 
         <!-- UserInfo properties -->
-        <Property key="userInfo.showPreferredDeviceID">false</Property>         <!-- [true|false] show preferred device ID field -->
+        <Property key="userInfo.showPreferredDeviceID">false</Property>         <!-- [true|false|admin] show preferred device ID field -->
         <Property key="userInfo.showPassword">false</Property>                  <!-- [true|false] Show passwords on User admin -->
         <Property key="userInfo.authorizedGroupCount">0</Property>              <!-- [Integer] (EXPERIMENTAL) Number of authorized group pull-downs to show -->
 
@@ -431,11 +427,15 @@ Notes:
         <Property key="statusCodeInfo.showPushpinChooser">true</Property>       <!-- [true|false] show Pushpin Chooser -->
 
         <!-- SysAdminAccounts properties (module may not be present) -->
+        <Property key="sysAdminAccounts.allowDeleteAccount">true</Property>     <!-- [true|false] allow delete account -->
         <Property key="sysAdminAccounts.showPasswords">false</Property>         <!-- [true|false] show passwords (possible security risk) -->
-        <Property key="sysAdminAccounts.allowAccountLogin">false</Property>     <!-- [true|false] allow login to other accounts (possible security risk) -->
         <Property key="sysAdminAccounts.showAccountManager">false</Property>    <!-- [true|false] show account manager, if supported -->
-        <Property key="sysAdminAccounts.reloginPasscode">relogin</Property>     <!-- [String] (EXPERIMENTAL) relogin passcode (possible security risk) -->
         <Property key="sysAdminAccounts.showNotes">false</Property>             <!-- [true|false] show "Notes" -->
+
+        <!-- Account-Login properties (if available) -->
+        <Property key="accountLogin.enableLogin">false</Property>               <!-- [true|false] allow login to other accounts (possible security risk) -->
+        <Property key="accountLogin.passcode">relogin</Property>                <!-- [String] (EXPERIMENTAL) relogin passcode (possible security risk) -->
+        <Property key="accountLogin.enableReturn">false</Property>              <!-- [true|false] allow return to originator on logout -->
 
         <!-- CorridorInfo properties (module may not be present) -->
         <Property key="corridorInfo.mapControlLocation">right</Property>        <!-- [right|left] show controls to the left|right of the map -->
@@ -517,23 +517,35 @@ Notes:
     <!-- (these icons created using "Marker Maker") -->
     <Pushpins baseURL="images/pp/">
         <!-- override standard color pushpins -->
-        <Pushpin key="black"    icon="pin30_black.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="brown"    icon="pin30_brown.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="red"      icon="pin30_red.png"         shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="orange"   icon="pin30_orange.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="yellow"   icon="pin30_yellow.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="green"    icon="pin30_green.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="blue"     icon="pin30_blue.png"        shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="purple"   icon="pin30_purple.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="gray"     icon="pin30_gray.png"        shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="white"    icon="pin30_white.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="black"      icon="pin30_black.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="brown"      icon="pin30_brown.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="red"        icon="pin30_red.png"        shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="orange"     icon="pin30_orange.png"     shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="yellow"     icon="pin30_yellow.png"     shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="green"      icon="pin30_green.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="blue"       icon="pin30_blue.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="purple"     icon="pin30_purple.png"     shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="gray"       icon="pin30_gray.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="white"      icon="pin30_white.png"      shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <!-- other solid colors -->
+        <Pushpin key="darkred"    icon="pin30_darkred.png"    shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="darkgreen"  icon="pin30_darkgreen.png"  shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="darkblue"   icon="pin30_darkblue.png"   shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="darkpurple" icon="pin30_darkpurple.png" shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="teal"       icon="pin30_teal.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="salmon"     icon="pin30_salmon.png"     shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="gold"       icon="pin30_gold.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="pink"       icon="pin30_pink.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="lime"       icon="pin30_lime.png"       shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="bluegray"   icon="pin30_bluegray.png"   shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="magenta"    icon="pin30_magenta.png"    shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
         <!-- some additional pushpins -->
-        <Pushpin key="reddot"   icon="pin30_red_dot.png"     shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="greendot" icon="pin30_green_dot.png"   shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
-        <Pushpin key="bluedot"  icon="pin30_blue_dot.png"    shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="reddot"     icon="pin30_red_dot.png"    shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="greendot"   icon="pin30_green_dot.png"  shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
+        <Pushpin key="bluedot"    icon="pin30_blue_dot.png"   shadow="pin30_shadow.png" iconSize="18,30" iconOffset="9,30" shadowSize="30,30"/>
     </Pushpins>
 
-    <!-- Multiple 'Pushpins' tags may be specified -->
+    <!-- Multiple 'Pushpins' tags may be specified -->Attribute "i18nPackage" must be declared for element type "PrivateLabels"
     <Pushpins baseURL="images/pp/">
         <!-- 
          === This example shows how a custom pushpin marker can be generated from within Javascript itself.
@@ -620,7 +632,7 @@ Notes:
      ===   - Only the first "active" MapProvider will be used.
      ===   - Remove the XML comment characters from around any Property you wish to change.
      === Most map providers should support the following properties:
-     ===     <Property key="javascript.include"><![CDATA[
+     ===     <Property key="javascript.src"><![CDATA[
      ===        http://js.example.com/js/MyCustomJavaScript.js
      ===     ]]></Property>                                         - include additional Javascript
      ===     <Property key="zone.map.width">630</Property>          - Geozone map width
@@ -641,6 +653,7 @@ Notes:
      ===     <Property key="auto.enable">true</Property>            - enable/disable auto-update
      ===     <Property key="auto.interval">30</Property>            - auto-update interval (in seconds)
      ===     <Property key="auto.count">10</Property>               - maximum number of auto-updates
+     ===     <Property key="auto.skipRadius">15</Property>          - skip nearby points radius (meters) [OpenLayers/Google only]
      === Most map providers will support the following properties (but possible not all):
      ===     <Property key="replay.enable">true</Property>          - enable/disable replay
      ===     <Property key="replay.interval">1700</Property>        - milliseconds replay interval (values < 30 are interpreted as seconds)
@@ -651,13 +664,28 @@ Notes:
      === OpenLayers [http://www.openlayers.org] using OpenStreetMaps [http://www.openstreetmap.org]
      -->
     <MapProvider name="openLayers" 
-        active="${Domain.MapProvider.active=false}"
+        active="${Domain.MapProvider.active=true}"
         class="org.opengts.war.maps.jsmap.OpenLayers"
         rtPropPrefix="Domain.MapProvider.">
+
+        <!-- override location of OpenLayers client-side JavaScript 
+         === If you wish to keep your own local cache of the OpenLayers.js JavaScript
+         === Copy the OpenLayers.js module to a local server, then change this link
+         === to point to your local cached version.
+         -->
+        <!-- Property key="openlayers.js">./js/openlayers/OpenLayers.js</Property -->
+        <Property key="openlayers.js">http://openlayers.org/api/OpenLayers.js</Property>
+
+        <!-- MapQuest layers -->
+        <Property key="mapQuest.enableLayer.osm">false</Property>       <!-- show MapQuest OSM map layer -->
+        <Property key="mapQuest.enableLayer.arial">false</Property>     <!-- show MapQuest Arial map layer -->
+
+        <!-- miscellaneous -->
         <Property key="map.fillFrame">false</Property>                  <!-- expand map to fill page frame -->
         <!-- <Property key="map.width">-1</Property> -->
         <!-- <Property key="map.height">-1</Property> -->
-        <Property key="info.showAltitude">true</Property>               <!-- show altitude in info balloon -->
+        <Property key="info.showAltitude">true</Property>               <!-- show altitude in info-balloon -->
+        <Property key="info.showSpeed">true</Property>                  <!-- show speed in info-balloon -->
         <Property key="jsmap.showMapLoading">true</Property>            <!-- show "Loading Map Points" when loading data -->
         <!-- <Property key="jsmap.showMapLoading.image">./images/MapLoading.gif</Property> -->
         <Property key="details.combineSpeedHeading">false</Property>    <!-- combine speed/heading into single column -->
@@ -688,9 +716,10 @@ Notes:
         <Property key="replay.singlePushpin">false</Property>           <!-- show only single pushpin during replay -->
 
         <!-- enable auto-update -->
-        <Property key="auto.enable">true</Property>
-        <Property key="auto.interval">20</Property>
-        <Property key="auto.count">10</Property>
+        <Property key="auto.enable">true</Property>                     <!-- enable/disable auto-update -->
+        <Property key="auto.interval">20</Property>                     <!-- auto-update interval (in seconds) -->
+        <Property key="auto.count">10</Property>                        <!-- maximum number of auto-updates -->
+        <Property key="auto.skipRadius">10</Property>                   <!-- skip nearby points radius (meters) -->
 
         <!-- use default pushpins -->
         <Pushpins includeDefault="true"/>
@@ -733,10 +762,10 @@ Notes:
          === This default 'selector' is implemented in the method "getDefaultMapIconIndex(...)" in the EventData class.
          === -->
         <!-- example icon selectors below (a valid 'RuleFactory' implementaion/installation required):
-        <IconSelector type="device" ruleFactoryName="GTSRulesEngine"><![CDATA[ 
+        <IconSelector type="device" ruleFactoryName="GTSRulesEngine,SecureENRE,ENRE"><![CDATA[ 
             ((mph<5.0)?"red":(mph<20.0)?"yellow":(mph<70.0)?"green":"greendot") 
             ]]></IconSelector>
-        <IconSelector type="fleet" ruleFactoryName="GTSRulesEngine"><![CDATA[ 
+        <IconSelector type="fleet" ruleFactoryName="GTSRulesEngine,SecureENRE,ENRE"><![CDATA[ 
             (isLast?$DEVICON("bluedot"):(mph<5)?"stop":(mph<20)?"yellowh":"greenh")
             ]]></IconSelector>
         -->
@@ -799,6 +828,7 @@ Notes:
         <!-- <Property key="map.maxPushpins">10</Property> -->
         <Property key="map.view">road</Property>                        <!-- [road|aerial|hybrid] map view/style -->
         <Property key="info.showAltitude">false</Property>              <!-- show altitude in info balloon -->
+        <Property key="info.showSpeed">true</Property>                  <!-- show speed in info-balloon -->
         <Property key="jsmap.showMapLoading">true</Property>
         <Property key="details.combineSpeedHeading">false</Property>    <!-- combine speed/heading into single column -->
         <!-- <Property key="ve.mapcontrol">http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1</Property> -->
@@ -874,28 +904,43 @@ Notes:
 
     <!-- =============================================
      === GoogleMaps
-     === Register for Google Map keys at: http://www.google.com/apis/maps/signup.html
-     === Note: When using the Google Map mapping service, it is your responsibility 
-     === to make sure you comply with all of the Google terms of use for this service.
-     ===   http://code.google.com/apis/maps/terms.html
+     === Google may require you to register for a key, check with the following link to see
+     === about the Google map version availability and whether a registered key is required:
+     ===    https://developers.google.com/maps/signup
+     === Note: When using the Google Map mapping service, it is your responsibility to make
+     === sure you comply with all of the Google terms of use for this service.
+     ===    https://developers.google.com/maps/terms
      -->
     <MapProvider name="googleMaps" 
-        active="${Domain.MapProvider.active=true}"
+        active="${Domain.MapProvider.active=false}"
         class="org.opengts.war.maps.jsmap.GoogleMaps"
-        key="${Domain.MapProvider.key=ABQIAAAAispjG8CbI-6MyOtZvtoREBTNHoIrsloLCxL-l95UKRUtO8rszxTBMts8l1wjFXUXh5F1_vbvrc3xDg}"
+        key="${Domain.MapProvider.key=***PLACE_AUTHORIZATION_KEY_HERE***}"
         rtPropPrefix="Domain.MapProvider.">
-        
+
+        <!-- Google Maps configuration -->
+        <!-- <Property key="google.mapcontrol">http://maps.google.com/maps?file=api&v=3&sensor=true&key=...</Property> -->
+        <Property key="google.version">3</Property>
+        <Property key="google.sensor">true</Property>
+        <Property key="google.channel"></Property>
+        <Property key="google.useSSL">false</Property>
+        <Property key="google.addTrafficOverlay">false</Property>
+        <Property key="google.addWeatherOverlay">false</Property>
+        <Property key="google.addCloudOverlay">false</Property>
+        <Property key="google.addPlacesSearch">false</Property>
+        <Property key="google.addPlacesNearby">false</Property>
+        <Property key="google.addOpenStreetMap">false</Property>
+        <Property key="google.addBingMap">false</Property>
+
+        <Property key="map.view">road</Property>                        <!-- [road|aerial|hybrid] map view/style -->
         <Property key="map.fillFrame">false</Property>
+        <Property key="scrollWheelZoom">false</Property>                <!-- enable/disable scroll wheel zoom -->
         <!-- <Property key="map.width">680</Property>           -->     <!-- map width -->
         <!-- <Property key="map.height">470</Property>          -->     <!-- map width -->
-        <Property key="scrollWheelZoom">false</Property>                <!-- enable/disable scroll wheel zoom -->
-        <!-- <Property key="google.mapcontrol">http://maps.google.com/maps?file=api&v=2&sensor=true&key=...</Property> -->
-        <Property key="google.sensor">true</Property>
 
         <!-- default zoom/location -->
-        <Property key="default.zoom">12</Property>                       <!-- default zoom when no pushpins are displayed -->
-        <Property key="default.lat">5.3566</Property>                  <!-- default latitude when no pushpins are displayed -->
-        <Property key="default.lon">-3.9975</Property>                 <!-- default longitude when no pushpins are displayed -->
+        <Property key="default.zoom">4</Property>                       <!-- default zoom when no pushpins are displayed -->
+        <Property key="default.lat">39.0000</Property>                  <!-- default latitude when no pushpins are displayed -->
+        <Property key="default.lon">-96.5000</Property>                 <!-- default longitude when no pushpins are displayed -->
 
         <!-- Geozone map size/config -->
         <!-- <Property key="zone.map.width">630</Property> -->
@@ -918,9 +963,10 @@ Notes:
         <Property key="replay.singlePushpin">false</Property>           <!-- show only single pushpin during replay -->
 
         <!-- auto update -->
-        <Property key="auto.enable">false</Property>
-        <Property key="auto.interval">20</Property>
-        <Property key="auto.count">10</Property>
+        <Property key="auto.enable">false</Property>                    <!-- enable/disable auto-update -->
+        <Property key="auto.interval">20</Property>                     <!-- auto-update interval (in seconds) -->
+        <Property key="auto.count">10</Property>                        <!-- maximum number of auto-updates -->
+        <Property key="auto.skipRadius">10</Property>                   <!-- skip nearby points radius (meters) -->
 
         <!-- use default pushpins -->
         <Pushpins includeDefault="true"/>
@@ -960,13 +1006,14 @@ Notes:
         class="org.opengts.geocoder.geonames.GeoNames"
         key=""
         rtPropPrefix="Domain.ReverseGeocodeProvider.">
-        <!-- <Property key="radiusKM">1.1</Property> -->
+        <Property key="radiusKM">1.0</Property>
         <Property key="host">ws.geonames.org</Property>
         <Property key="postalFailover">false</Property> <!-- findNearbyPostalCodes -->
         <Property key="streetFailover">false</Property> <!-- findNearbyStreetsOSM -->
         <!--
-         === Set the following properties to appropriate values when purchasing the 
-         === Geonames Commercial reverse-geocoding service:
+         === - Set the following properties to appropriate values when purchasing the 
+         ===   Geonames Commercial reverse-geocoding service.
+         === - Geonames may also require a "username" for the free service as well.
          -->
         <Property key="failoverHost"></Property>
         <Property key="username"></Property>
@@ -993,6 +1040,21 @@ Notes:
     </ReverseGeocodeProvider>
 
     <!-- =============================================
+     === OpenCageData Reverse-Geocode Provider (default disabled)
+     === - This reverse-geocoding uses the services provided by 'OpenCageData.com' [http://www.opencagedata.com/]
+     === - Properties:
+     ===    Domain.ReverseGeocodeProvider.active=opencage
+     ===    Domain.ReverseGeocodeProvider.key=*PLACE_AUTHORIZATION_KEY_HERE*
+     -->
+    <ReverseGeocodeProvider name="opencage" 
+        active="${Domain.ReverseGeocodeProvider.active=false}"
+        class="org.opengts.geocoder.opencage.OpenCageData"
+        key="${Domain.ReverseGeocodeProvider.key=*PLACE_AUTHORIZATION_KEY_HERE*}"
+        rtPropPrefix="Domain.ReverseGeocodeProvider.">
+        <Property key="alwaysFast">false</Property>
+    </ReverseGeocodeProvider>
+
+    <!-- =============================================
      === GISGraphy Reverse-Geocode Provider (default disabled)
      === - http://www.gisgraphy.com
      === - Must be installed on your servers
@@ -1009,23 +1071,41 @@ Notes:
     </ReverseGeocodeProvider>
 
     <!-- =============================================
+     === GISGraphy Reverse-Geocode Provider V4 (default disabled)
+     === - http://www.gisgraphy.com
+     === - Must be installed on your servers
+     -->
+    <ReverseGeocodeProvider name="gisgraphy4" 
+        active="${Domain.ReverseGeocodeProvider.active=false}"
+        class="org.opengts.geocoder.gisgraphy4.GisGraphy"
+        key=""
+        rtPropPrefix="Domain.ReverseGeocodeProvider.">
+        <Property key="host">localhost</Property>   <!-- services.gisgraphy.com -->
+        <Property key="streetURL"></Property>       <!-- http://free.gisgraphy.com/reversegeocoding/reversegeocode? -->
+    </ReverseGeocodeProvider>
+
+    <!-- =============================================
      === Nominatim OpenStreetMap/Mapquest Reverse-Geocode Provider 
      === - Mapquest      ==> http://open.mapquestapi.com/nominatim/
      === - OpenStreetMap ==> http://nominatim.openstreetmap.org
-     ===   The OpenStreetMap "Nominative Usage Policy" can be found at the following link: 
+     ===   The OpenStreetMap "Nominatim Usage Policy" can be found at the following link: 
      ===     http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy
+     === - Register for Mapquest Nominatim AppKey at the following link:
+     ===     https://developer.mapquest.com/
      -->
     <ReverseGeocodeProvider name="nominatim" 
         active="${Domain.ReverseGeocodeProvider.active=false}"
         class="org.opengts.geocoder.nominatim.Nominatim"
         key=""
         rtPropPrefix="Domain.ReverseGeocodeProvider.">
-        <!-- Property key="reverseURL">http://nominatim.openstreetmap.org/reverse?</Property -->
-        <Property key="reverseURL">http://open.mapquestapi.com/nominatim/v1/reverse?</Property>
+        <!-- Property key="reverseURL"><![CDATA[http://nominatim.openstreetmap.org/reverse?]]></Property -->
+        <Property key="reverseURL"><![CDATA[http://open.mapquestapi.com/nominatim/v1/reverse?]]></Property>
         <Property key="host"></Property>
+        <Property key="mapquestAppKey"></Property>  <!-- Mapquest "Consumer key" -->
         <Property key="addressdetails">1</Property>
         <Property key="zoom">18</Property>
-        <Property key="email"></Property>
+        <Property key="email"></Property> <!-- per usage policy, this must be specified -->
+        <Property key="useResultAddress">false</Property>
         <Property key="alwaysFast">false</Property>
     </ReverseGeocodeProvider>
 
@@ -1047,21 +1127,53 @@ Notes:
     </GeocodeProvider>
 
     <!-- =============================================
-     === GoogleGeocodeV2 Reverse-Geocode Provider (default disabled)
+     === GoogleGeocodeV2 Reverse-Geocode Provider (default disabled) [OBSOLETE as of 2013/09/08]
      === - Register for Google Map keys at: http://www.google.com/apis/maps/signup.html
      === - NOTE: When using the Google reverse-geocoding service, it is your responsibility
      ===   to make sure you comply with all of the Google terms of use for this service.
-     === - NOTE: Google has a limit of 2500 reverse-geocodes in any 24-hour period.
+     === - NOTE: Google may limit he number of reverse-geocodes allowed in any 24-hour period.
      -->
     <ReverseGeocodeProvider name="google" 
-        active="${Domain.ReverseGeocodeProvider.active=true}"
+        active="${Domain.ReverseGeocodeProvider.active=false}"
         class="org.opengts.geocoder.google.GoogleGeocodeV2"
-        key="${Domain.ReverseGeocodeProvider.key=ABQIAAAAispjG8CbI-6MyOtZvtoREBTNHoIrsloLCxL-l95UKRUtO8rszxTBMts8l1wjFXUXh5F1_vbvrc3xDg}"
+        key="${Domain.ReverseGeocodeProvider.key=}"
         rtPropPrefix="Domain.ReverseGeocodeProvider.">
         <Property key="sensor">true</Property>
         <Property key="alwaysFast">false</Property>
     </ReverseGeocodeProvider>
-    
+    <GeocodeProvider name="googleV2" 
+        active="${Domain.GeocodeProvider.active=false}"
+        class="org.opengts.geocoder.google.GoogleGeocodeV2"
+        key="${Domain.GeocodeProvider.key=}"
+        rtPropPrefix="Domain.GeocodeProvider.">
+        <Property key="sensor">false</Property>
+    </GeocodeProvider>
+
+    <!-- =============================================
+     === GoogleGeocodeV3 Reverse-Geocode Provider (default disabled)
+     === - NOTE: When using the Google reverse-geocoding service, it is your responsibility
+     ===   to make sure you comply with all of the Google terms of use for this service.
+     === - NOTE: Google may limit he number of reverse-geocodes allowed in any 24-hour period.
+     -->
+    <ReverseGeocodeProvider name="googleV3" 
+        active="${Domain.ReverseGeocodeProvider.active=true}"
+        class="org.opengts.geocoder.google.GoogleGeocodeV3"
+        key="${Domain.ReverseGeocodeProvider.key=AIzaSyC6tdGRfSKNB8QpLke8UIdwT1D0YE3tW48}"
+        rtPropPrefix="Domain.ReverseGeocodeProvider.">
+        <Property key="sensor">true</Property>
+        <Property key="alwaysFast">false</Property>
+        <Property key="signatureKey"></Property>
+        <Property key="ignoreIfMoving">false</Property>     <!-- true to only RG if stopped -->
+    </ReverseGeocodeProvider>
+    <GeocodeProvider name="googleV3" 
+        active="${Domain.GeocodeProvider.active=false}"
+        class="org.opengts.geocoder.google.GoogleGeocodeV3"
+        key="${Domain.GeocodeProvider.key=}"
+        rtPropPrefix="Domain.GeocodeProvider.">
+        <Property key="sensor">false</Property>
+        <Property key="signatureKey"></Property>
+    </GeocodeProvider>
+
     <!-- ========================================================================================== -->
 
     <!-- =============================================
@@ -1073,6 +1185,20 @@ Notes:
     <MobileLocationProvider name="openCellID" 
         active="${Domain.MobileLocationProvider.active=false}"
         class="org.opengts.cellid.opencellid.OpenCellID"
+        key="${Domain.MobileLocationProvider.key=}"
+        rtPropPrefix="Domain.MobileLocationProvider.">
+        <Property key="timeoutMS">5000</Property>
+    </MobileLocationProvider>
+
+    <!-- =============================================
+     === UnwiredLabs (not yet tested - may not yet be fully supported)
+     === Note: A "key" (token) may be required to access this service.  
+     === Please see the following link for more info:
+     ===   http://www.unwiredlabs.com/
+     -->
+    <MobileLocationProvider name="unwiredLabs" 
+        active="${Domain.MobileLocationProvider.active=false}"
+        class="org.opengts.cellid.unwiredlabs.UnwiredLabs"
         key="${Domain.MobileLocationProvider.key=}"
         rtPropPrefix="Domain.MobileLocationProvider.">
         <Property key="timeoutMS">5000</Property>
@@ -1095,12 +1221,25 @@ Notes:
         <Acl name="acl.admin.user:acls"             values="0,1,2"   default="0" i18n="PrivateXML.acl.userAdminACL"         >User Administration (ACL access)</Acl>
         <Acl name="acl.admin.user:groups"           values="0,1,2"   default="1" i18n="PrivateXML.acl.userAdminGroups"      >User Administration (Group)</Acl>
         <Acl name="acl.admin.user:role"             values="0,1,2"   default="1" i18n="PrivateXML.acl.userAdminRole"        >User Administration (Role)</Acl>
+        <Acl name="acl.admin.user:deviceID"         values="0,1,2"   default="1" i18n="PrivateXML.acl.userAdminDeviceID"    >User Administration (Preferred DeviceID)</Acl>
         <Acl name="acl.admin.role"                  values="0,1,2,3" default="0" i18n="PrivateXML.acl.roleAdmin"            >Role Administration</Acl>
         <Acl name="acl.admin.device"                values="0,1,2,3" default="1" i18n="PrivateXML.acl.deviceAdmin"          >Device Administration</Acl>
         <Acl name="acl.admin.device:uniqueID"       values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminUniqID"    >Device Administration (Device UniqueID)</Acl>
+        <Acl name="acl.admin.device:active"         values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminActive"    >Device Administration (Device Active)</Acl>
+        <Acl name="acl.admin.device:serverID"       values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminServID"    >Device Administration (Server ID)</Acl>
+        <Acl name="acl.admin.device:firmware"       values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminFirmware"  >Device Administration (Firmware)</Acl>
         <Acl name="acl.admin.device:rules"          values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminRules"     >Device Administration (Notification Rules)</Acl>
         <Acl name="acl.admin.device:commands"       values="0,2"     default="2" i18n="PrivateXML.acl.deviceAdminCommands"  >Device Administration (Commands)</Acl>
-        <Acl name="acl.admin.device:sms"            values="0,2"     default="2" i18n="PrivateXML.acl.deviceAdminSms"       >Device Administration (SMS)</Acl>
+        <Acl name="acl.admin.device:sms"            values="0,2"     default="2" i18n="PrivateXML.acl.deviceAdminSms"       >Device Administration (SMS Commands)</Acl>
+        <Acl name="acl.admin.device:editSMS"        values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditSms"   >Device Administration (Edit SMS)</Acl>
+        <Acl name="acl.admin.device:editSIM"        values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditSIM"   >Device Administration (Edit SIM)</Acl>
+        <Acl name="acl.admin.device:editEquipStat"  values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditEqStat">Device Administration (Edit Equip Status)</Acl>
+        <Acl name="acl.admin.device:editIMEI"       values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditIMEI"  >Device Administration (Edit IMEI)</Acl>
+        <Acl name="acl.admin.device:editSerial"     values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditSerial">Device Administration (Edit Serial#)</Acl>
+        <Acl name="acl.admin.device:editDatKey"     values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminEditDatKey">Device Administration (Edit DataKey)</Acl>
+        <Acl name="acl.admin.device:fuelCapacity"   values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminFuelEconom">Device Administration (Fuel Economy)</Acl>
+        <Acl name="acl.admin.device:fuelProfile"    values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminFuelProfil">Device Administration (Fuel Profile)</Acl>
+        <Acl name="acl.admin.device:fuelEconomy"    values="0,1,2"   default="1" i18n="PrivateXML.acl.deviceAdminFuelCapac" >Device Administration (Fuel Capacity)</Acl>
         <Acl name="acl.admin.group"                 values="0,1,2,3" default="1" i18n="PrivateXML.acl.groupAdmin"           >Group Administration</Acl>
         <Acl name="acl.admin.driver"                values="0,1,2,3" default="1" i18n="PrivateXML.acl.driverAdmin"          >Driver Administration</Acl>
         <Acl name="acl.admin.zone"                  values="0,1,2,3" default="1" i18n="PrivateXML.acl.zoneAdmin"            >Geozone Administration</Acl>
@@ -1117,6 +1256,7 @@ Notes:
         <Acl name="acl.map.fleet"                   values="0,1"     default="1" i18n="PrivateXML.acl.fleetMap"             >Fleet/Group Map Display</Acl>
         <Acl name="acl.map.fleet:auto"              values="0,1"     default="1" i18n="PrivateXML.acl.fleetMapAuto"         >Fleet/Group Map (Auto Update)</Acl>
         <!-- report groups -->
+        <Acl name="acl.reportGroup:nonHtml"         values="0,1"     default="1" i18n="PrivateXML.acl.reportFormat.nonHtml" >Report Group (Format: non-html)</Acl>
         <Acl name="acl.reportGroup.detail"          values="0,1"     default="1" i18n="PrivateXML.acl.reportDetail"         >Report Group (Detail)</Acl>
         <Acl name="acl.reportGroup.summary"         values="0,1"     default="1" i18n="PrivateXML.acl.reportSummary"        >Report Group (Summary)</Acl>
         <Acl name="acl.reportGroup.performance"     values="0,1"     default="1" i18n="PrivateXML.acl.reportPerformance"    >Report Group (Performance)</Acl>
@@ -1134,14 +1274,16 @@ Notes:
         <Acl name="acl.report.j1708fault"           values="0,1"     default="1" i18n="PrivateXML.acl.report.j1708Fault"    >Report (J1708 Fault)</Acl>
         <Acl name="acl.report.propertyValue"        values="0,1"     default="1" i18n="PrivateXML.acl.report.propertyValue" >Report (Property Value)</Acl>
         <Acl name="acl.report.diagnosticValue"      values="0,1"     default="1" i18n="PrivateXML.acl.report.diagValue"     >Report (Error/Diagnostic Value)</Acl>
-        <Acl name="acl.report.tripReport"           values="0,1"     default="1" i18n="PrivateXML.acl.report.tripReport"    >Report (Trip Report Detail)</Acl>
-        <Acl name="acl.report.bcrossDetail"         values="0,1"     default="1" i18n="PrivateXML.acl.report.bCrossDetail"  >Report (Border-Crossing Detail)</Acl>
-        <Acl name="acl.report.bcrossSummary"        values="0,1"     default="1" i18n="PrivateXML.acl.report.bCrossSummary" >Report (Border-Crossing Summary)</Acl>
         <Acl name="acl.report.unassignedDevices"    values="0,1"     default="0" i18n="PrivateXML.acl.report.unassignedDev" >Report (Unassigned Devices)</Acl>
         <Acl name="acl.report.periodicMaint"        values="0,1"     default="1" i18n="PrivateXML.acl.report.periodicMain"  >Report (Periodic Maintenance)</Acl>
         <Acl name="acl.report.distanceTravel"       values="0,1"     default="1" i18n="PrivateXML.acl.report.distTravel"    >Report (Distance Traveled)</Acl>
         <Acl name="acl.report.ignitionDetail"       values="0,1"     default="1" i18n="PrivateXML.acl.report.ignitionDetail">Report (Ignition Detail)</Acl>
         <Acl name="acl.report.geozone"              values="0,1"     default="1" i18n="PrivateXML.acl.report.geozone"       >Report (Geozone)</Acl>
+        <!-- not supported
+        <Acl name="acl.report.tripReport"           values="0,1"     default="1" i18n="PrivateXML.acl.report.tripReport"    >Report (Trip Report Detail)</Acl>
+        <Acl name="acl.report.bcrossDetail"         values="0,1"     default="1" i18n="PrivateXML.acl.report.bCrossDetail"  >Report (Border-Crossing Detail)</Acl>
+        <Acl name="acl.report.bcrossSummary"        values="0,1"     default="1" i18n="PrivateXML.acl.report.bCrossSummary" >Report (Border-Crossing Summary)</Acl>
+        -->
     </Acls>
 
     <!-- Defined JSP Entries (this section is optional)
@@ -1176,8 +1318,23 @@ Notes:
      ===    CSS files in the directory "war/track/css/".
      ===  - The "rtPropPrefix" value can be used to disable a given Page to omit it from the menu.
      ===    For instance "Domain.WebPages.defailt=/jsp/myLoginSession.jsp"
+     ===  - The "ButtonImage" tag specifies a background button image file.  To reference the file
+     ===    relative to the specified "buttonDir" attribute (on the "WebPages" tag), do not prefix
+     ===    the "ButtonImage" file reference with "/".  To specify an image relative to the servlet
+     ===    URL, prefix the image reference with a single "/".  To use this feature, the property
+     ===    "topMenu.menuType" must be set to "button" or "button-icon".
+     ===  - The "IconImage" tag specifies a foreground button image file.  To reference the file
+     ===    relative to the specified "iconDir" attribute (on the "WebPages" tag), do not prefix
+     ===    the "IconImage" file reference with "/".  To specify an image relative to the servlet
+     ===    URL, prefix the image reference with a single "/".  To use this feature, the property
+     ===    "topMenu.menuType" must be set to "button-icon".
      -->
-    <WebPages jsp="default" cssDir="/css" rtPropPrefix="Domain.WebPages.">
+    <WebPages rtPropPrefix="Domain.WebPages."
+        jsp="default" 
+        cssDir="/css" 
+        iconDir=""
+        buttonDir=""
+        >
         <!-- NewAccount: Uncomment to enable "New Account" button on login page - ->
         <Page class="org.opengts.war.track.page.NewAccount">
             </Page>
@@ -1203,9 +1360,15 @@ Notes:
             <Title i18n="PrivateXML.menugroup.maps">Mapping</Title>
             <Page rtKey="TrackMapDevice" class="org.opengts.war.track.page.TrackMapDevice">
                 <AclName>acl.map.device</AclName>
+                <!-- <ButtonImage> Place_Button_Cap_Image_URL_Here </ButtonImage> -->
+                <!-- <ButtonImageAlt> Place_Rollover_Button_Cap_Image_URL_Here </ButtonImageAlt> -->
+                <!-- <IconImage> Place_Button_Icon_Overlay_Image_URL_Here </IconImage> -->
                 </Page>
             <Page rtKey="TrackMapFleet" class="org.opengts.war.track.page.TrackMapFleet">
                 <AclName>acl.map.fleet</AclName>
+                <!-- <ButtonImage> Place_Button_Cap_Image_URL_Here </ButtonImage> -->
+                <!-- <ButtonImageAlt> Place_Rollover_Button_Cap_Image_URL_Here </ButtonImageAlt> -->
+                <!-- <IconImage> Place_Button_Icon_Overlay_Image_URL_Here </IconImage> -->
                 <Property key="showFleetFromCalendar">false</Property>
                 <!-- <Property key="fleetDeviceEventCount">1</Property> -->
                 </Page>
@@ -1221,6 +1384,9 @@ Notes:
                 </Page>
             <Page rtKey="ReportMenuFleetSummary" class="org.opengts.war.track.page.ReportMenuFleetSummary">
                 <AclName>acl.reportGroup.summary</AclName>
+                </Page>
+            <Page rtKey="ReportMenuDevicePerformance" class="org.opengts.war.track.page.ReportMenuDevicePerformance">
+                <AclName>acl.reportGroup.performance</AclName>
                 </Page>
             <Page rtKey="ReportMenuDriverPerformance" class="org.opengts.war.track.page.ReportMenuDriverPerformance">
                 <AclName>acl.reportGroup.performance</AclName>
@@ -1238,10 +1404,6 @@ Notes:
             <Page rtKey="UserInfo" class="org.opengts.war.track.page.UserInfo">
                 <AclName>acl.admin.user</AclName>
                 </Page>
-            <Page rtKey="RoleInfo" class="org.opengts.extra.war.track.page.RoleInfo"
-                optional="true">
-                <AclName>acl.admin.role</AclName>
-                </Page>
             <Page rtKey="DeviceInfo" class="org.opengts.war.track.page.DeviceInfo">
                 <AclName>acl.admin.device</AclName>
                 </Page>
@@ -1255,14 +1417,6 @@ Notes:
                 -->
             <Page rtKey="ZoneInfo" class="org.opengts.war.track.page.ZoneInfo">
                 <AclName>acl.admin.zone</AclName>
-                </Page>
-            <Page rtKey="RuleInfo" class="org.opengts.rulewar.track.page.RuleInfo"
-                optional="true">
-                <AclName>acl.admin.rule</AclName>
-                </Page>
-            <Page rtKey="StatusCodeInfo" class="org.opengts.extra.war.track.page.StatusCodeInfo"
-                optional="true">
-                <AclName>acl.admin.statusCode</AclName>
                 </Page>
             <Page rtKey="ChangePassword" class="org.opengts.war.track.page.ChangePassword">
                 <AclName>acl.admin.password</AclName>
@@ -1293,21 +1447,11 @@ Notes:
         <MenuGroup name="menuGroup.sysAdmin" topMenu="true" menuBar="true">
             <!-- These web-pages may not be available in this release -->
             <Title i18n="PrivateXML.menugroup.systemAdmin">System Admin</Title>
-            <!--
-            <Page rtKey="SysAdminInfo" class="org.opengts.extra.war.track.page.SysAdminInfo" cssDir="extra/css"
-                optional="true">
-                <AclName>acl.admin.sysAdmin</AclName>
-                </Page> 
-            -->
-            <Page rtKey="SysAdminAccounts" class="org.opengts.war.track.page.SysAdminAccounts" cssDir="extra/css"
+            <Page rtKey="SysAdminAccounts" class="org.opengts.war.track.page.SysAdminAccounts"
                 optional="true">
                 <AclName>acl.admin.sysAdmin</AclName>
                 </Page>
             <!--
-            <Page rtKey="SysAdminDevices" class="org.opengts.extra.war.track.page.SysAdminDevices" cssDir="extra/css"
-                optional="true">
-                <AclName>acl.admin.sysAdmin</AclName>
-                </Page>
             <Page rtKey="ReportMenuSysAdmin" class="org.opengts.war.track.page.ReportMenuSysAdmin"
                 optional="true">
                 <AclName>acl.reportGroup.sysadmin</AclName>
@@ -1326,25 +1470,15 @@ Notes:
         <Report name="EventDetail">
             <AclName>acl.report.eventDetail</AclName>
             </Report>
-        <Report name="TripReport"
-            optional="true">
-            <AclName>acl.report.tripReport</AclName>
+        <Report name="DriverMessageDetail">
+            <AclName>acl.report.eventDetail</AclName>
             </Report>
-        <Report name="GeozoneReport"
+        <Report name="EventCountByDay"
             optional="true">
-            <AclName>acl.report.geozone</AclName>
+            <AclName>acl.report.eventCount</AclName>
             </Report>
-        <Report name="GeozoneDriving"
-            optional="true">
-            <AclName>acl.report.geozone</AclName>
-            </Report>
-        <Report name="IgnitionDetailReport"
-            optional="true">
-            <AclName>acl.report.ignitionDetail</AclName>
-            </Report>
-        <Report name="EventThermo"
-            optional="true">
-            <AclName>acl.report.thermo</AclName>
+        <Report name="MotionSummary">
+            <AclName>acl.report.motionSummary</AclName>
             </Report>
         <Report name="PropertyValue">
             <AclName>acl.report.propertyValue</AclName>
@@ -1362,27 +1496,11 @@ Notes:
             </Report>
 
         <!-- fleet.summary -->
-        <Report name="EventSummary">
+        <Report name="EventDataSummary">
             <AclName>acl.report.eventSummary</AclName>
             </Report>
         <Report name="EventCount">
             <AclName>acl.report.eventCount</AclName>
-            </Report>
-        <Report name="EventSessionStatus"
-            optional="true">
-            <AclName>acl.report.eventCount</AclName>
-            </Report>
-        <Report name="PeriodicService"
-            optional="true">
-            <AclName>acl.report.periodicMaint</AclName>
-            </Report>
-        <Report name="DistanceTraveled"
-            optional="true">
-            <AclName>acl.report.distanceTravel</AclName>
-            </Report>
-        <Report name="IgnitionSummaryReport"
-            optional="true">
-            <AclName>acl.report.ignitionDetail</AclName>
             </Report>
 
         <!-- device.performance -->
@@ -1391,9 +1509,6 @@ Notes:
             </Report>
         <Report name="EventExcessSpeed">
             <AclName>acl.report.excessSpeed</AclName>
-            </Report>
-        <Report name="MotionSummary">
-            <AclName>acl.report.motionSummary</AclName>
             </Report>
 
     </Reports>
